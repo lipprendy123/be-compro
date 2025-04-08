@@ -15,6 +15,12 @@ import (
 
 func RunServer() {
 	cfg := config.NewConfig()
+	_, err := cfg.ConnectionMysql()
+	if err != nil {
+		log.Fatal("Error connecting to database: %v", err)
+		return
+	}
+
 	e := echo.New()
 	e.Use(middleware.CORS())
 

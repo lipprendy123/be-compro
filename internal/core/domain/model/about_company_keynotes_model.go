@@ -1,0 +1,17 @@
+package model
+
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
+
+type AboutCompanyKeynotes struct {
+	ID             int64 `gorm:"id,primaryKey"`
+	AboutCompanyID int64
+	Keynote        string
+	PathImage      *string
+	CreatedAt      time.Time
+	UpdatedAt      *time.Time
+	DeletedAt      gorm.DeletedAt `gorm:"index"`
+}

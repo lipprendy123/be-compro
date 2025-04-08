@@ -1,6 +1,7 @@
 package config
 
 import (
+	"compro/database/seeds"
 	"fmt"
 
 	"github.com/rs/zerolog/log"
@@ -13,7 +14,7 @@ type Mysql struct {
 }
 
 func (cfg Config) ConnectionMysql() (*Mysql, error) {
-	dbConnString := fmt.Sprintf("mysql://%s:%s@%s:%s/%s",
+	dbConnString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true",
 		cfg.Mysql.User,
 		cfg.Mysql.Password,
 		cfg.Mysql.Host,
@@ -32,7 +33,7 @@ func (cfg Config) ConnectionMysql() (*Mysql, error) {
 		return nil, err
 	}
 
-	// seeds.seedRoles(db)
+	seeds.SeedAdmin(db)
 
 	sqlDB.SetMaxOpenConns(cfg.Mysql.DBMaxOpen)
 	sqlDB.SetMaxIdleConns(cfg.Mysql.DBMaxIdle)
