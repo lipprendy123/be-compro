@@ -11,6 +11,12 @@ type App struct {
 	JwtIssuer    string `json:"jwt_issuer"`
 }
 
+type Supabase struct {
+	StorageUrl    string `json:"storage_url"`
+	StorageKey    string `json:"storage_key"`
+	StorageBucket string `json:"storage_bucker"`
+}
+
 type MysqlDB struct {
 	Host      string `json:"host"`
 	Port      string `json:"port"`
@@ -22,8 +28,9 @@ type MysqlDB struct {
 }
 
 type Config struct {
-	App   App
-	Mysql MysqlDB
+	App      App
+	Mysql    MysqlDB
+	Supabase Supabase
 }
 
 func NewConfig() *Config {
@@ -43,6 +50,11 @@ func NewConfig() *Config {
 			DBName:    viper.GetString("DATABASE_NAME"),
 			DBMaxOpen: viper.GetInt("DATABASE_MAX_OPEN_CONNECTION"),
 			DBMaxIdle: viper.GetInt("DATABASE_MAX_IDLE_CONNECTION"),
+		},
+		Supabase: Supabase{
+			StorageUrl:    viper.GetString("SUPABASE_STORAGE_URL"),
+			StorageKey:    viper.GetString("SUPABASE_STORAGE_KEY"),
+			StorageBucket: viper.GetString("SUPABASE_STORAGE_BUCKET"),
 		},
 	}
 }

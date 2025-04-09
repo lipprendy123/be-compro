@@ -6,6 +6,7 @@ import (
 	"compro/internal/adapter/repository"
 	"compro/internal/core/service"
 	"compro/utils/auth"
+	"compro/utils/validator"
 	"context"
 	"log"
 	"os"
@@ -13,6 +14,7 @@ import (
 	"syscall"
 	"time"
 
+	en "github.com/go-playground/validator/v10/translations/en"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -33,6 +35,9 @@ func RunServer() {
 
 	e := echo.New()
 	e.Use(middleware.CORS())
+	customValidator := validator.NewValidator()
+	en.RegisterDefaultTranslations(customValidator.Validator, customValidator.Translator)
+	e.Validator = customValidator
 
 	e.GET("/api/checking", func(c echo.Context) error {
 		return c.String(202, "OK")
