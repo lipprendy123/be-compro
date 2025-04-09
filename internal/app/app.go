@@ -2,6 +2,10 @@ package app
 
 import (
 	"compro/config"
+	"compro/internal/adapter/handler"
+	"compro/internal/adapter/repository"
+	"compro/internal/core/service"
+	"compro/utils/auth"
 	"context"
 	"log"
 	"os"
@@ -15,14 +19,26 @@ import (
 
 func RunServer() {
 	cfg := config.NewConfig()
-	_, err := cfg.ConnectionMysql()
+	db, err := cfg.ConnectionMysql()
 	if err != nil {
 		log.Fatal("Error connecting to database: %v", err)
 		return
 	}
 
+	jwt := auth.NewJwt(cfg)
+
+	userRepo := repository.NewUserRepository(db.DB)
+
+	userService := service.NewUserService(userRepo, cfg, jwt)
+
 	e := echo.New()
 	e.Use(middleware.CORS())
+
+	e.GET("/api/checking", func(c echo.Context) error {
+		return c.String(202, "OK")
+	})
+
+	handler.NewUserHandler(e, userService)
 
 	go func() {
 		if cfg.App.AppPort == "" {
