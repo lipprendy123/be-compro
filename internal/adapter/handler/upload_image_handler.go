@@ -3,8 +3,8 @@ package handler
 import (
 	"bytes"
 	"compro/config"
-	"compro/internal/adapater/handler/response"
-	"compro/internal/adapater/storage"
+	"compro/internal/adapter/handler/response"
+	"compro/internal/adapter/storage"
 	"compro/utils/middleware"
 	"fmt"
 	"io"
