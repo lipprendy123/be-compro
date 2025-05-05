@@ -1,8 +1,10 @@
 package conv
 
 import (
+	"compro/internal/core/domain/entity"
 	"net/http"
 
+	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -30,4 +32,10 @@ func SetHTTPStatusCode(err error) int {
 	default:
 		return http.StatusInternalServerError
 	}
+}
+
+func GetUserIDByContext(ctx echo.Context) int64 {
+	u := ctx.Get("user")
+	claims := u.(*entity.JwtData)
+	return int64(claims.UserID)
 }
